@@ -8,6 +8,8 @@ La interfaz está disponible en:
 
 **https://landin2312.github.io/traductor-es-it/**
 
+![Captura del traductor](screenshot.png)
+
 > Para que las traducciones funcionen es necesario tener el backend corriendo en tu PC (ver instrucciones abajo). Sin el backend activo la interfaz muestra "Servidor no disponible".
 
 ## Estructura del proyecto
