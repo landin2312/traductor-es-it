@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Traduttore ES → IT</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+    :root {
+      --green:   #009246;
+      --white:   #ffffff;
+      --red:     #ce2b37;
+      --cream:   #fdf8f0;
+      --shadow:  rgba(0, 0, 0, 0.12);
+      --text:    #1a1a2e;
+      --muted:   #6b7280;
+      --border:  #e5e7eb;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #009246 0%, #00b356 50%, #009246 100%);
+      color: var(--white);
+      text-align: center;
+      padding: 2rem 1rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--green) 33.3%, var(--white) 33.3%, var(--white) 66.6%, var(--red) 66.6%);
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--green) 33.3%, var(--white) 33.3%, var(--white) 66.6%, var(--red) 66.6%);
+    }
+
+    header .flag-emoji { font-size: 2.2rem; display: block; margin-bottom: 0.4rem; }
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    header p {
+      font-size: 0.9rem;
+      opacity: 0.88;
+      margin-top: 0.3rem;
+      font-style: italic;
+    }
+
+    /* ── Main ── */
+    main {
+      flex: 1;
+      max-width: 860px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    /* ── Quick examples ── */
+    .examples-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+    .examples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-bottom: 1.6rem;
+    }
+    .example-btn {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      color: var(--text);
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      font-family: 'Inter', sans-serif;
+    }
+    .example-btn:hover {
+      border-color: var(--green);
+      color: var(--green);
+      background: #f0fdf4;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(0,146,70,0.15);
+    }
+
+    /* ── Translation card ── */
+    .card {
+      background: var(--white);
+      border-radius: 18px;
+      box-shadow: 0 4px 24px var(--shadow);
+      overflow: hidden;
+    }
+
+    .panels {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 600px) {
+      .panels { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      padding: 1.4rem 1.6rem;
+    }
+    .panel:first-child {
+      border-right: 1px solid var(--border);
+    }
+    @media (max-width: 600px) {
+      .panel:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.8rem;
+    }
+    .lang-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .lang-badge .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+    .dot-es { background: #f59e0b; }
+    .dot-it { background: var(--green); }
+
+    textarea {
+      width: 100%;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--text);
+      background: transparent;
+      min-height: 140px;
+    }
+    textarea::placeholder { color: #c4c4cc; }
+
+    .char-count {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: right;
+      margin-top: 0.4rem;
+    }
+    .char-count.warn { color: var(--red); }
+
+    .output-area {
+      min-height: 140px;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--text);
+      font-family: 'Playfair Display', serif;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .output-area.placeholder-text { color: #c4c4cc; font-family: 'Inter', sans-serif; font-style: italic; font-size: 0.95rem; }
+    .output-area.error-text { color: var(--red); font-family: 'Inter', sans-serif; font-size: 0.9rem; }
+
+    /* ── Action bar ── */
+    .action-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.6rem;
+      border-top: 1px solid var(--border);
+      background: #fafafa;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #d1d5db;
+      transition: background 0.3s;
+    }
+    .status-dot.online  { background: var(--green); animation: pulse 2s infinite; }
+    .status-dot.offline { background: var(--red); }
+    .status-dot.loading { background: #f59e0b; animation: pulse 0.8s infinite; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    .btn-translate {
+      background: linear-gradient(135deg, var(--green), #00b356);
+      color: var(--white);
+      border: none;
+      padding: 0.7rem 2rem;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 3px 12px rgba(0,146,70,0.35);
+    }
+    .btn-translate:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0,146,70,0.4);
+    }
+    .btn-translate:active:not(:disabled) { transform: translateY(0); }
+    .btn-translate:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Spinner */
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: var(--white);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 1.2rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    footer span { color: var(--red); }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="flag-emoji">🇮🇹</span>
+  <h1>Traduttore Spagnolo → Italiano</h1>
+  <p>Powered by Qwen2-0.5B · Modello locale · Sin API externas</p>
+</header>
+
+<main>
+  <p class="examples-label">Ejemplos rápidos del profesor</p>
+  <div class="examples">
+    <button class="example-btn" onclick="useExample('Me gusta el fútbol')">Me gusta el fútbol</button>
+    <button class="example-btn" onclick="useExample('¿Cómo estás?')">¿Cómo estás?</button>
+    <button class="example-btn" onclick="useExample('¿Qué hora es?')">¿Qué hora es?</button>
+  </div>
+
+  <div class="card">
+    <div class="panels">
+      <!-- Input -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="lang-badge">
+            <span class="dot dot-es"></span>
+            Español 🇪🇸
+          </div>
+        </div>
+        <textarea id="inputText"
+          placeholder="Escribe aquí en español…"
+          maxlength="500"
+          oninput="onInput()"
+          onkeydown="handleKey(event)"
+        ></textarea>
+        <div class="char-count" id="charCount">0 / 500</div>
+      </div>
+
+      <!-- Output -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="lang-badge">
+            <span class="dot dot-it"></span>
+            Italiano 🇮🇹
+          </div>
+        </div>
+        <div class="output-area placeholder-text" id="outputArea">
+          La traduzione apparirà qui…
+        </div>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="status-indicator">
+        <div class="status-dot loading" id="statusDot"></div>
+        <span id="statusText">Verificando servidor…</span>
+      </div>
+      <button class="btn-translate" id="translateBtn" onclick="translate()" disabled>
+        <div class="spinner" id="spinner"></div>
+        <span id="btnLabel">Tradurre →</span>
+      </button>
+    </div>
+  </div>
+</main>
+
+<footer>
+  Hecho con <span>♥</span> · Qwen/Qwen2-0.5B · Flask · Uso académico
+</footer>
+
+<script>
+  const API = 'http://localhost:5000';
+  let serverOnline = false;
+
+  /* ── Health check ── */
+  async function checkHealth() {
+    try {
+      const r = await fetch(`${API}/health`, { signal: AbortSignal.timeout(4000) });
+      const data = await r.json();
+      if (r.ok && data.status === 'ok') {
+        setStatus('online', 'Servidor listo');
+        serverOnline = true;
+        document.getElementById('translateBtn').disabled = false;
+      } else {
+        setStatus('loading', 'Modelo cargando…');
+        setTimeout(checkHealth, 3000);
+      }
+    } catch {
+      setStatus('offline', 'Servidor no disponible');
+      setTimeout(checkHealth, 5000);
+    }
+  }
+
+  function setStatus(state, text) {
+    const dot  = document.getElementById('statusDot');
+    const span = document.getElementById('statusText');
+    dot.className = `status-dot ${state}`;
+    span.textContent = text;
+  }
+
+  /* ── Input helpers ── */
+  function onInput() {
+    const len   = document.getElementById('inputText').value.length;
+    const el    = document.getElementById('charCount');
+    el.textContent = `${len} / 500`;
+    el.className   = `char-count${len > 450 ? ' warn' : ''}`;
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) translate();
+  }
+
+  function useExample(text) {
+    const ta = document.getElementById('inputText');
+    ta.value = text;
+    onInput();
+    if (serverOnline) translate();
+  }
+
+  /* ── Translate ── */
+  async function translate() {
+    const text = document.getElementById('inputText').value.trim();
+    if (!text) return;
+
+    const btn     = document.getElementById('translateBtn');
+    const spinner = document.getElementById('spinner');
+    const label   = document.getElementById('btnLabel');
+    const output  = document.getElementById('outputArea');
+
+    btn.disabled       = true;
+    spinner.style.display = 'block';
+    label.textContent  = 'Traduciendo…';
+    output.className   = 'output-area placeholder-text';
+    output.textContent = 'Elaborazione in corso…';
+
+    try {
+      const res  = await fetch(`${API}/translate`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ text }),
+        signal:  AbortSignal.timeout(60000),
+      });
+      const data = await res.json();
+
+      if (res.ok && data.translation) {
+        output.className   = 'output-area';
+        output.textContent = data.translation;
+      } else {
+        output.className   = 'output-area error-text';
+        output.textContent = `Error: ${data.error || 'Respuesta inesperada del servidor.'}`;
+      }
+    } catch (err) {
+      output.className   = 'output-area error-text';
+      output.textContent = err.name === 'TimeoutError'
+        ? 'Error: El servidor tardó demasiado. Intenta de nuevo.'
+        : 'Error: No se pudo conectar al servidor.';
+    } finally {
+      btn.disabled          = !serverOnline;
+      spinner.style.display = 'none';
+      label.textContent     = 'Tradurre →';
+    }
+  }
+
+  checkHealth();
+</script>
+</body>
+</html>
