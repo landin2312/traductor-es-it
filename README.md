@@ -2,6 +2,14 @@
 
 Aplicación web de traducción español-italiano usando el modelo base **Qwen/Qwen2-0.5B** de Hugging Face con inferencia local. Sin APIs externas.
 
+## Demo
+
+La interfaz está disponible en:
+
+**https://landin2312.github.io/traductor-es-it/**
+
+> Para que las traducciones funcionen es necesario tener el backend corriendo en tu PC (ver instrucciones abajo). Sin el backend activo la interfaz muestra "Servidor no disponible".
+
 ## Estructura del proyecto
 
 ```
@@ -9,6 +17,8 @@ traductor_es_it/
 ├── backend/
 │   ├── app.py            # Servidor Flask con el modelo
 │   └── requirements.txt  # Dependencias Python
+├── docs/
+│   └── index.html        # Frontend (GitHub Pages)
 ├── frontend/
 │   └── index.html        # Interfaz completa (HTML + CSS + JS)
 └── README.md
@@ -22,14 +32,21 @@ traductor_es_it/
 
 ## Instalación y ejecución
 
-### 1. Instalar dependencias del backend
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/landin2312/traductor-es-it.git
+cd traductor-es-it
+```
+
+### 2. Instalar dependencias del backend
 
 ```bash
 cd backend
 pip install -r requirements.txt
 ```
 
-### 2. Iniciar el servidor Flask
+### 3. Iniciar el servidor Flask
 
 ```bash
 python app.py
@@ -39,14 +56,17 @@ La primera vez descargará el modelo **Qwen/Qwen2-0.5B** (~1 GB). Una vez cargad
 
 ```
 Model loaded successfully.
- * Running on http://0.0.0.0:5000
+ * Running on http://127.0.0.1:5000
 ```
 
-### 3. Abrir el frontend
+### 4. Abrir la interfaz
 
-Abre el archivo `frontend/index.html` directamente en tu navegador (doble clic). No necesita servidor web propio.
+Con el servidor corriendo, abre cualquiera de estas opciones:
 
-El indicador de estado en la interfaz cambiará a **verde** cuando el servidor esté listo.
+- **Online:** https://landin2312.github.io/traductor-es-it/
+- **Local:** archivo `frontend/index.html` directamente en el navegador
+
+El indicador de estado cambiará a **verde** cuando detecte el servidor.
 
 ## Uso
 
